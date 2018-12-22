@@ -22,5 +22,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(Constant.MEDIA_LIST_EXTRA,mediaList)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+
     }
 }
