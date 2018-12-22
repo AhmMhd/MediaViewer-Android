@@ -11,6 +11,7 @@ class MediaViewer : AppCompatActivity() {
         setContentView(R.layout.activity_media_viewer)
 
         val mediaList = ArrayList<String>()
+        if(intent.hasExtra(Constant.MEDIA_LIST_EXTRA))
         mediaList.addAll(intent.extras.getStringArrayList(Constant.MEDIA_LIST_EXTRA))
 
         val adapter = MediaViewAdapter(this,mediaList)
