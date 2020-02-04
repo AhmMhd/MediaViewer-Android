@@ -20,7 +20,7 @@ allprojects {
   Step 2. Add the dependency
   ```
   dependencies {
-	        implementation 'com.github.AhmMhd:MediaViewer-Android:1.0.1'
+	        implementation 'com.github.AhmMhd:MediaViewer-Android:1.0.2'
 	}
   ```
   **************************************************************************************************************************************
@@ -41,6 +41,11 @@ Open MediaViewer activity and pass the arraylist as intent extra
 ```
 val intent = Intent(this,MediaViewer::class.java)
         intent.putExtra(Constant.MEDIA_LIST_EXTRA,mediaList)
-        startActivity(intent)
+        intent.putExtra(Constant.BACKGROUND_COLOR,"#ffffff")
+        intent.putExtra(Constant.MEDIA_TITLE,"")
+        intent.putExtra(Constant.MEDIA_TITLE_COLOR,"#000000")
+        intent.putExtra(Constant.MEDIA_BACK_COLOR,"#000000")
+	startActivity(intent)
+	
 ```
 
