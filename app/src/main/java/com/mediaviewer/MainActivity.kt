@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, MediaViewer::class.java)
         intent.putExtra(Constant.MEDIA_LIST_EXTRA,mediaList)
+        intent.putExtra(Constant.BACKGROUND_COLOR,"#ffffff")
+        intent.putExtra(Constant.MEDIA_TITLE,"")
+        intent.putExtra(Constant.MEDIA_TITLE_COLOR,"#000000")
+        intent.putExtra(Constant.MEDIA_BACK_COLOR,"#000000")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
 
