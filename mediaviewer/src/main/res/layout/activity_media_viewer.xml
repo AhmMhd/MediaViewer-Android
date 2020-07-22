@@ -18,6 +18,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/toolbarTitle"
             app:layout_constraintTop_toTopOf="@+id/toolbarTitle" />
 
+
     <TextView
             android:id="@+id/toolbarTitle"
             android:layout_width="wrap_content"

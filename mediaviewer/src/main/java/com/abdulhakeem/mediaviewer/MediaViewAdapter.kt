@@ -3,61 +3,76 @@ package com.abdulhakeem.mediaviewer
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Parcelable
 import android.support.v4.view.PagerAdapter
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import com.aik.tor.util.FileUtils
+import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import java.io.File
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import com.bogdwellers.pinchtozoom.ImageMatrixTouchHandler
 import kotlinx.android.synthetic.main.li_media_viewer.view.*
 
 
-class MediaViewAdapter(var context: Context, var list : ArrayList<String>) : PagerAdapter()
-{
+class MediaViewAdapter(
+    var context: Context,
+    var list: ArrayList<String>,
+    val downloadfun: (String) -> Unit
+) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
-        val view = LayoutInflater.from(context).inflate(R.layout.li_media_viewer,container,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.li_media_viewer, container, false)
 
         view.thumbnail.setOnTouchListener(ImageMatrixTouchHandler(context));
 
         Glide.with(context)
-                .load(list.get(position))
-                .thumbnail(0.1f)
-                .listener(object : RequestListener<Drawable?>
-                {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
+            .load(list.get(position))
+            .thumbnail(0.1f)
+            .listener(object : RequestListener<Drawable?> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable?>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable?>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        view.progressbar.visibility = View.GONE
-                        return false
-                    }
-                })
-                .into(view.thumbnail)
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable?>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    view.progressbar.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(view.thumbnail)
 
-        when(FileUtils.getExtension(list.get(position)))
-        {
-            "jpg","jpeg","png"->{view.video_overlay.visibility = View.GONE}
-            else -> {view.video_overlay.visibility = View.VISIBLE}
+        when (FileUtils.getExtension(list.get(position))) {
+            "jpg", "jpeg", "png" -> {
+                view.video_overlay.visibility = View.GONE
+                view.download.visibility = View.VISIBLE
+                view.download.setOnClickListener {
+                    downloadfun(list[position])
+                }
+            }
+            else -> {
+                view.download.visibility = View.GONE
+                view.video_overlay.visibility = View.VISIBLE
+            }
         }
 
         view.video_overlay.setOnClickListener {
             val videoIntent = Intent(Intent.ACTION_VIEW)
-            videoIntent.setDataAndType(Uri.parse(list.get(position)),"video/*")
+            videoIntent.setDataAndType(Uri.parse(list.get(position)), "video/*")
             context.startActivity(videoIntent)
         }
         container.addView(view)
